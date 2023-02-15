@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "cli-table": "^0.3.11",
     "prettytable": "^0.3.1",
     "prompt-sync": "^4.2.0",
     "table": "^6.8.1"

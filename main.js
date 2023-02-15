@@ -1,290 +1,278 @@
 const input = require('prompt-sync')({sigint: true});
+const Table = require('cli-table');
 
 const participant = [];
-const package = [];
-const facility = [];
-const cost = [];
 
+const package = {
+    route: [
+        'Karawang-Pantai Pakis Jaya',
+        'Karawang-Curug Cigentis-Gunung Sanggabuana',
+        'Karawang-Candi Jiwa',
+        'Karawang-Pantai Samudra'
+    ],
 
-const travelData = [
-    ['Karawang-Pantai Pakis Jaya',                   1000000, 'Penginapan',  600000],
-    ['Karawang-Curug Cigentis-Gunung Sanggabuana', 500000,  'Penjemputan', 300000],
-    ['Karawang-Candi Jiwa',                          600000,  'Kuliner',     300000],
-    ['Karawang-Pantai Samudra',                      850000]
-]
-
-function insert() {
-    console.clear();
-    const participantNew = input('Nama Peserta: ');
-    const packageCode = input('Kode Paket: ');
-    const addPackageCode = input('Kode Tambahan: ')
-
-    if(packageCode == 1 || packageCode == 01) {
-        if(addPackageCode.toUpperCase() == 'A') {
-            participant.push(participantNew);
-            package.push(travelData[0][0]);
-            facility.push(travelData[0][2]);
-            const rates = travelData[0][1] + travelData[0][3]
-            cost.push(rates);
-        } else if(addPackageCode.toUpperCase() == 'B') {
-            participant.push(participantNew);
-            package.push(travelData[0][0])
-            facility.push(travelData[1][2]);
-            const rates = travelData[0][1] + travelData[1][3];
-            cost.push(rates);
-        } else if(addPackageCode.toUpperCase() == 'C') {
-            participant.push(participantNew);
-            package.push(travelData[0][0]);
-            facility.push(travelData[2][2]);
-            const rates = travelData[0][1] + travelData[2][3];
-            cost.push(rates);
-        } else {
-            console.log('Data tidak ditemukan!')
-        }
-    } else if(packageCode == 2 || packageCode == 02) {
-        if(addPackageCode.toUpperCase() == 'A') {
-            participant.push(participantNew);
-            package.push(travelData[1][0]);
-            facility.push(travelData[0][2]);
-            const rates = travelData[1][1] + travelData[0][3]
-            cost.push(rates);
-        } else if(addPackageCode.toUpperCase() == 'B') {
-            participant.push(participantNew);
-            package.push(travelData[1][0])
-            facility.push(travelData[1][2]);
-            const rates = travelData[1][1] + travelData[1][3];
-            cost.push(rates);
-        } else if(addPackageCode.toUpperCase() == 'C') {
-            participant.push(participantNew);
-            package.push(travelData[1][0]);
-            facility.push(travelData[2][2]);
-            const rates = travelData[1][1] + travelData[2][3];
-            cost.push(rates);
-        } else {
-            console.log('Data tidak ditemukan!')
-        }
-    } else if(packageCode == 3 || packageCode == 03) {
-        if(addPackageCode.toUpperCase() == 'A') {
-            participant.push(participantNew);
-            package.push(travelData[2][0]);
-            facility.push(travelData[0][2]);
-            const rates = travelData[2][1] + travelData[0][3]
-            cost.push(rates);
-        } else if(addPackageCode.toUpperCase() == 'B') {
-            participant.push(participantNew);
-            package.push(travelData[2][0])
-            facility.push(travelData[1][2]);
-            const rates = travelData[2][1] + travelData[1][3];
-            cost.push(rates);
-        } else if(addPackageCode.toUpperCase() == 'C') {
-            participant.push(participantNew);
-            package.push(travelData[2][0]);
-            facility.push(travelData[2][2]);
-            const rates = travelData[2][1] + travelData[2][3];
-            cost.push(rates);
-        } else {
-            console.log('Data tidak ditemukan!')
-        }
-    } else if(packageCode == 4 || packageCode == 04) {
-        if(addPackageCode.toUpperCase() == 'A') {
-            participant.push(participantNew);
-            package.push(travelData[3][0]);
-            facility.push(travelData[0][2]);
-            const rates = travelData[3][1] + travelData[0][3]
-            cost.push(rates);
-        } else if(addPackageCode.toUpperCase() == 'B') {
-            participant.push(participantNew);
-            package.push(travelData[3][0])
-            facility.push(travelData[1][2]);
-            const rates = travelData[3][1] + travelData[1][3];
-            cost.push(rates);
-        } else if(addPackageCode.toUpperCase() == 'C') {
-            participant.push(participantNew);
-            package.push(travelData[3][0]);
-            facility.push(travelData[2][2]);
-            const rates = travelData[3][1] + travelData[2][3];
-            cost.push(rates);
-        } else {
-            console.log('Data tidak ditemukan!')
-        }
-    } else {
-        console.log('Data tidak ditemukan!')
-    }
+    rates: [ 1000000, 500000, 600000, 850000 ]
 }
 
-function showData() {
-    console.clear();
-    if(participant.length < 1) {
-        console.log('Data masih kosong')
-    } else {
-        console.log('Daftar Peserta')
-        participant.forEach((p, i) => {
-            console.log(i+1, `${p}`, `${package[i]}`, `${facility[i]}`, `Rp${cost[i]}`)
-        })
-    }
+const additionalPackage = {
+    facility: [ 'Penginapan', 'Penjemputan', 'Kuliner' ],
+
+    retes: [ 600000, 300000, 300000 ]
 }
 
-function changeData() {
+const showPackage = () => {
     console.clear();
-    if(participant.length < 1) {
-        console.log('Data belum ada!')
-    } else {
-        const index = input('Masukkan no: ');
-        if(index > participant.length || index == 0) {
-            console.log('Data tidak ditemukan!')
-        } else {
-            console.log(`${index} ${participant[index-1]} ${package[index-1]} ${facility[index-1]} ${cost[index-1]}`)
-            const participantNew = input('Nama Peserta baru: ');
-            const packageCode = input('Kode Paket baru: ');
-            const addPackageCode = input('Kode Tambahan baru: ')
+    const packageList = new Table({
+        head: ['Kode Paket', 'Rute Perjalanan', 'Minimum Peserta', 'Tarif']
+    });
 
-            if(packageCode == 1 || packageCode == 01) {
-                if(addPackageCode.toUpperCase() == 'A') {
-                    participant[index-1] = participantNew;
-                    package[index-1] = (travelData[0][0]);
-                    facility[index-1] = (travelData[0][2]);
-                    const rates = travelData[0][1] + travelData[0][3]
-                    cost[index-1] = (rates);
-                } else if(addPackageCode.toUpperCase() == 'B') {
-                    participant[index-1] = participantNew;
-                    package[index-1] = (travelData[0][0])
-                    facility[index-1] = (travelData[1][2]);
-                    const rates = travelData[0][1] + travelData[1][3];
-                    cost[index-1] = (rates);
-                } else if(addPackageCode.toUpperCase() == 'C') {
-                    participant[index-1] = participantNew;
-                    package[index-1] = (travelData[0][0]);
-                    facility[index-1] = (travelData[2][2]);
-                    const rates = travelData[0][1] + travelData[2][3];
-                    cost[index-1] = (rates);
-                } else {
-                    console.log('Data tidak ditemukan!')
+    packageList.push(
+        ['1', 'Karawang - Pantai Pakis Jaya', '6 Orang', 'Rp. 1.000.000'],
+        ['2', 'Karawang - Curug Cigentis - Gunung Sanggabuana', '6 Orang', 'Rp. 500.000'],
+        ['3', 'Karawang - Candi Jiwa', '4 Orang', 'Rp. 600.000'],
+        ['4', 'Karawang - Pantai Samudra ', '5 Orang', 'Rp. 850.000']
+    );
+    
+    const additionalPackageList = new Table({
+        head: ['Kode Tambahan', 'Fasilitas', 'Tarif']
+    });
+
+    additionalPackageList.push(
+        ['1', 'Penginapan', 'Rp. 600.000'],
+        ['2', 'Penjemputan', 'Rp. 300.000'],
+        ['3', 'Kuliner', 'Rp. 300.000']
+    )
+    console.log('Daftar Paket:')
+    console.log(packageList.toString());
+    console.log('\nLayanan tambahan yang dapat ditambahkan:')
+    console.log(additionalPackageList.toString());
+}
+
+const showData = () => {
+    console.log('Daftar Peserta');
+    const table = new Table({
+        head: ['No', 'Nama Peserta', 'Paket', 'Fasilitas', 'Jumlah Tarif']
+    });
+    let index = 0;
+    for (const i of participant) {
+        index++;
+        table.push([index, i.name, i.package, i.facility, `Rp. ${i.total}`])
+    }
+
+    console.log(table.toString());
+}
+
+const insertData = () => {
+    console.clear();
+    showPackage();
+
+    const name = input('Nama peserta: ');
+    let isPackage
+    while (true) {
+        isPackage = input('Pilih paket: ');
+        if(isNaN(isPackage)) {
+            console.error('Input paket harus angka!')
+        } else if(isPackage > package.route.length || isPackage < 1 ) {
+            console.log('Kode paket hanya tersedia 1 s/d 4!')
+        } else {
+            break;
+        } 
+    }
+    
+    let isAdditionalPackage;
+    while (true) {
+        isAdditionalPackage = input('Pilih Paket Tambahan: ')
+        if(isNaN(isAdditionalPackage)) {
+            console.error('Input paket harus angka!')
+        } else if(isAdditionalPackage > additionalPackage.facility.length || isAdditionalPackage < 1) {
+            console.log('Kode paket hanya tersedia 1 s/d 3!')
+        } else {
+           break;
+        }
+    }
+
+    const getRoute = package.route[isPackage-1];
+    const getFacility = additionalPackage.facility[isAdditionalPackage-1];
+    const total = package.rates[isPackage-1] + additionalPackage.retes[isAdditionalPackage-1];
+    participant.push({
+        name: name,
+        package: getRoute,
+        facility: getFacility,
+        total: total
+    });
+    console.log('Data berhasil ditambahkan!')
+}
+
+const changeData = () => {
+    console.clear();
+    let isNumber;
+    showData();
+    while (true) {
+        isNumber = input('Pilih no perserta: ');
+        if(participant.length < 1) {
+            console.log('Data peserta masih kosong!')
+            const isConfirm = input('Kembali ke menu (y/t)? ');
+            if(isConfirm === 'y') {
+                break
+            }
+        } else {
+            if(isNaN(isNumber)) {
+                console.error('Input harus angka!')
+            } else if(isNumber > participant.length || isNumber < 1) {
+                console.log(`No peserta hanya tersedia 1 s/d ${participant.length}!`)
+            } else {
+                break;
+            }
+        }
+    }
+
+
+    showPackage();
+    console.log('Data berhasil ditemukan!')
+    const table = new Table({
+        head: ['No', 'Nama Peserta', 'Paket', 'Fasilitas', 'Jumlah Tarif']
+    });
+
+    table.push([isNumber, participant[isNumber-1].name, participant[isNumber-1].package, participant[isNumber-1].facility, `Rp. ${participant[isNumber-1].total}`])
+    console.log(table.toString());
+
+    const newName = input('Nama peserta baru: ');
+    let isNewPackage
+    while (true) {
+        isNewPackage = input('Pilih paket baru: ');
+        if(isNaN(isNewPackage)) {
+            console.error('Input paket harus angka!')
+        } else if(isNewPackage > package.route.length || isNewPackage < 1 ) {
+            console.log('Kode paket hanya tersedia 1 s/d 4!')
+        } else {
+            break;
+        } 
+    }
+    
+    let isNewAdditionalPackage;
+    while (true) {
+        isNewAdditionalPackage = input('Pilih Paket Tambahan baru: ')
+        if(isNaN(isNewAdditionalPackage)) {
+            console.error('Input paket harus angka!')
+        } else if(isNewAdditionalPackage > additionalPackage.facility.length || isNewAdditionalPackage < 1) {
+            console.log('Kode paket hanya tersedia 1 s/d 3!')
+        } else {
+           break;
+        }
+    }
+
+    const getRoute = package.route[isNewPackage-1];
+    const getFacility = additionalPackage.facility[isNewAdditionalPackage-1];
+    const total = package.rates[isNewPackage-1] + additionalPackage.retes[isNewAdditionalPackage-1];
+    participant[isNumber-1].name = newName;
+    participant[isNumber-1].package = getRoute;
+    participant[isNumber-1].facility = getFacility;
+    participant[isNumber-1].total = total;
+    console.log('Data berhasil diubah!')
+}
+
+const searchData = () => {
+    console.clear();
+    showData();
+    while(true) {
+        const search = input('Masukkan nama peserta: ').toLowerCase();
+        if(participant.length < 1) {
+            console.log('Data masih kosong!');
+            const isConfirm = input('Kembali ke menu (y/t)? ')
+            if(isConfirm === 'y') {
+                break;
+            }
+        } else {
+            const filtered = participant.filter(word => word.name.toLowerCase().includes(search))
+            const found = filtered[0];
+            if(found) {
+                // console.log(filtered);
+                const table = new Table({
+                    head: ['No', 'Nama Peserta', 'Paket', 'Fasilitas', 'Jumlah Tarif']
+                });
+
+                for (let i = 0; i < filtered.length; i++) {
+                    table.push([i+1, filtered[i].name, filtered[i].package, filtered[i].facility, `Rp. ${filtered[i].total}`])
                 }
-            } else if(packageCode == 2 || packageCode == 02) {
-                if(addPackageCode.toUpperCase() == 'A') {
-                    participant[index-1] = participantNew;
-                    package[index-1] = (travelData[1][0]);
-                    facility[index-1] = (travelData[0][2]);
-                    const rates = travelData[1][1] + travelData[0][3]
-                    cost[index-1] = (rates);
-                } else if(addPackageCode.toUpperCase() == 'B') {
-                    participant[index-1] = participantNew;
-                    package[index-1] = (travelData[1][0])
-                    facility[index-1] = (travelData[1][2]);
-                    const rates = travelData[1][1] + travelData[1][3];
-                    cost[index-1] = (rates);
-                } else if(addPackageCode.toUpperCase() == 'C') {
-                    participant[index-1] = participantNew;
-                    package[index-1] = (travelData[1][0]);
-                    facility[index-1] = (travelData[2][2]);
-                    const rates = travelData[1][1] + travelData[2][3];
-                    cost[index-1] = (rates);
-                } else {
-                    console.log('Data tidak ditemukan!')
-                }
-            } else if(packageCode == 3 || packageCode == 03) {
-                if(addPackageCode.toUpperCase() == 'A') {
-                    participant[index-1] = participantNew;
-                    package[index-1] = (travelData[2][0]);
-                    facility[index-1] = (travelData[0][2]);
-                    const rates = travelData[2][1] + travelData[0][3]
-                    cost[index-1] = (rates);
-                } else if(addPackageCode.toUpperCase() == 'B') {
-                    participant[index-1] = participantNew;
-                    package[index-1] = (travelData[2][0])
-                    facility[index-1] = (travelData[1][2]);
-                    const rates = travelData[2][1] + travelData[1][3];
-                    cost[index-1] = (rates);
-                } else if(addPackageCode.toUpperCase() == 'C') {
-                    participant[index-1] = participantNew;
-                    package[index-1] = (travelData[2][0]);
-                    facility[index-1] = (travelData[2][2]);
-                    const rates = travelData[2][1] + travelData[2][3];
-                    cost[index-1] = (rates);
-                } else {
-                    console.log('Data tidak ditemukan!')
-                }
-            } else if(packageCode == 4 || packageCode == 04) {
-                if(addPackageCode.toUpperCase() == 'A') {
-                    participant[index-1] = participantNew;
-                    package[index-1] = (travelData[3][0]);
-                    facility[index-1] = (travelData[0][2]);
-                    const rates = travelData[3][1] + travelData[0][3]
-                    cost[index-1] = (rates);
-                } else if(addPackageCode.toUpperCase() == 'B') {
-                    participant[index-1] = participantNew;
-                    package[index-1] = (travelData[3][0])
-                    facility[index-1] = (travelData[1][2]);
-                    const rates = travelData[3][1] + travelData[1][3];
-                    cost[index-1] = (rates);
-                } else if(addPackageCode.toUpperCase() == 'C') {
-                    participant[index-1] = participantNew;
-                    package[index-1] = (travelData[3][0]);
-                    facility[index-1] = (travelData[2][2]);
-                    const rates = travelData[3][1] + travelData[2][3];
-                    cost[index-1] = (rates);
-                } else {
-                    console.log('Data tidak ditemukan!')
+                console.log(table.toString());
+                const isConfirm = input('Kembali ke menu (y/t)? ');
+                if(isConfirm === 'y') {
+                    break;
                 }
             } else {
-                console.log('Data tidak ditemukan!')
+                console.log('Data tidak ditemukan')
             }
         }
     }
 }
 
-function searchData() {
-    console.clear()
-    const search = input("Masukkan nama: ").toLowerCase();
-    // filtered = search.filter(name => name.participant.includes(search));
-    const filtered = participant.filter(i => i.toLowerCase().includes(search))
-    const found = filtered[0];
-    if(found) {
-        console.log(`Data ditemukan: ${found}`)
-    } else {
-        console.log('Data tidak ditemukan')
-    }
-}
-function deleteData() {
+const deleteData = () => {
     console.clear();
-    if(participant.length < 1) {
-        console.log('Data masih kosong!')
-    } else {
-        const index = input('Masukkan no: ');
-        if(index-1 > participant.length || index == 0) {
-            console.log('Peserta tidak ditemukan!')
+    let isNumber;
+    showData();
+    while(true) {
+        isNumber = input('Pilih no peserta: ')
+        if(participant.length < 1) {
+            console.log('Data peserta masih kosong');
+            const isConfirm = input('Kembali ke menu (y/t)? ')
+            if(isConfirm === 'y') {
+                break;
+            }
         } else {
-            participant.splice(index-1, 1);
-            package.splice(index-1, 1);
-            facility.splice(index-1, 1);
-            cost.splice(index-1, 1);
+            if(isNaN(isNumber)) {
+                console.error('Input harus angka!')
+            } else if(isNumber > participant.length || isNumber < 1) {
+                console.log(`No peserta hanya tersedia 1 s/d ${participant.length}!`)
+            } else {
+                break;
+            }
         }
+    }
+
+    const isConfirm = input('Kamu yakin (y/t)? ');
+    if(isConfirm === 't') {
+        menu();
+    } else {
+        participant.splice(isNumber-1, 1);
+        console.log('Data berhasil dihapus!')
     }
 }
 
-function run() {
+const menu = () => {
     let isLoop = true
     while (isLoop) {
-        const menuList = ['Tambah data', 'Tampilkan data', 'Cari data', 'Ubah data', 'Hapus data', 'Keluar'];
-        console.log('Menu')
-        menuList.forEach((m, i) => console.log(`${i+1}. ${m}`));
-        const menu = input('Pilih menu ? ')
-        if(menu == 1) {
-            insert();
-        } else if(menu == 2) {
-            showData();
-        } else if(menu == 3) {
-            searchData();
-        } else if(menu == 4) {
-            changeData();
-        } else if(menu == 5) {
-            deleteData();   
-        } else if(menu == 6) {
-            isLoop = false;
-        } else {
-            console.log('data tidak ditemukan!')
+        const menuList = ['Tampilkan peserta', 'Tambah data', 'Ubah data', 'Cari Data', 'Hapus data', 'Keluar'];
+        console.log('Daftar Menu')
+        menuList.forEach((m, i) => {
+            console.log(`${i+1}. ${m}`)
+        });
+    
+        const isMenu = input('Pilih menu: ')
+        switch (parseInt(isMenu)) {
+            case 1:
+                console.clear();
+                showData();
+                break;
+            case 2:
+                insertData();
+                break;
+            case 3:
+                changeData();
+                break;
+            case 4:
+                searchData();
+                break;
+            case 5: 
+                deleteData();
+                break;
+            case 6:
+                isLoop = false
+                break;
+            default:
+                console.log('Data tidak ditemukan')
+                break;
         }
     }
-};
+}
 
-run();
+menu();
