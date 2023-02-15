@@ -191,9 +191,9 @@ const searchData = () => {
                     head: ['No', 'Nama Peserta', 'Paket', 'Fasilitas', 'Jumlah Tarif']
                 });
 
-                for (let i = 0; i < filtered.length; i++) {
-                    table.push([i+1, filtered[i].name, filtered[i].package, filtered[i].facility, `Rp. ${filtered[i].total}`])
-                }
+                filtered.forEach((f, i) => {
+                    table.push([i+1, f.name, f.package, f.facility, `Rp. ${f.total}`])
+                })
                 console.log(table.toString());
                 const isConfirm = input('Kembali ke menu (y/t)? ');
                 if(isConfirm === 'y') {
